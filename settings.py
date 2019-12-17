@@ -9,7 +9,7 @@ class Settings():
 		self.screen_width=1200
 		self.screen_height=500
 		self.bg_color= (0, 0 , 0)
-		# self.bg_image = pygame.image.load('images/background.bmp')
+		self.bg_image = pygame.image.load('images/background.bmp')
 		# self.bg_image('spacex.bmp') trying to add  a background image for the games background.
 		
 		# ship settings 
@@ -19,3 +19,4 @@ class Settings():
 		self.bullet_width = 3
 		self.bullet_height = 15
 		self.bullet_color =255, 0, 102
+		self.bullets_allowed = 3

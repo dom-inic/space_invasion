@@ -1,6 +1,8 @@
 # ship file for describing the ship in the game
 import pygame
 
+from settings import Settings
+
 class Ship():
 
 	def __init__(self,ai_settings,screen):
@@ -30,7 +32,7 @@ class Ship():
 		if self.moving_right and self.rect.right < self.screen_rect.right:
 			self.center += self.ai_settings.ship_speed_factor
 
-		if self.moving_left and self.rect.left > 0:
+		if self.moving_left and self.rect.left > self.screen_rect.left:
 			self.center -= self.ai_settings.ship_speed_factor
 
 		# update rect object from self.center
