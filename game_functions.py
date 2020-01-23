@@ -2,6 +2,7 @@
 import sys
 import pygame
 from bullet import Bullet
+from ufo import Ufo
 
 def check_keydown_events(event,ai_settings, screen,ship, bullets):
 	"""respond to keypresses """
@@ -27,7 +28,7 @@ def fire_bullet(ai_settings, screen, ship, bullets):
 		bullets.add(new_bullet)
 def check_keyup_events(event,ship):
 	"""respond to key releases"""
-	if event.key == pygame.K_RIGHT:
+	if event.key == pygame.K_RIGHT: 
 		ship.moving_right = False
 	elif event.type == pygame.K_LEFT:
 		ship.moving_left = False
@@ -47,7 +48,7 @@ def check_events(ai_settings,screen, ship, bullets):
 
 
 				
-def update_screen(ai_settings,screen, ship, bullets):
+def update_screen(ai_settings,screen, ship, ufos, bullets):
 	"""update images on the screen and flip to the new screen"""
 	screen.fill(ai_settings.bg_color)
 	# redraw all bullets behind ship and aliens
@@ -55,6 +56,8 @@ def update_screen(ai_settings,screen, ship, bullets):
 		bullet.draw_bullet()
 
 	ship.blitme()
+	ufo.blitme()
+	aliens.draw(screen)
 
 	# make the most recently drawn screen visible
 	pygame. display.flip()
@@ -68,5 +71,21 @@ def update_bullets(bullets):
 		if bullet.rect.bottom <= 0:
 			bullets.remove(bullet)
 
+def create_fleet(ai_settings, screen, ufos):
+	"""create a full fleet of ufos"""
+	# create a ufo and find the number of ufos in a row
+	# spacing between each ufo is equal to one ufo width
+	ufo = Ufo(ai_settings, screen)
+	ufo_width = ufo.rect.width
+	available_space_x = ai_settings.screen_width -2 *ufo_width
+	number_ufos_x = int(available_space_x / (2 * ufo_width))
+
+	# create the first row of ufos. 
+	for ufo_number in range(number_ufos_x):
+		# create a ufo and place it in the row
+		ufo = Ufo(ai_settings, screen)
+		ufo.x = ufo_width + 2 * ufo_width * ufo_number
+		ufo.rect.x = ufo.x
+		ufo.add(ufo)
 
 

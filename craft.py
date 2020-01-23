@@ -5,11 +5,13 @@ import pygame
 from pygame.sprite import Group
 from settings import Settings
 from ship import Ship
+from ufo import Ufo
 import game_functions as gf
 
 def run_game():
 	# initialize game and create a screen object.
 	pygame.init()
+	# make an instance of the class Settings 
 	ai_settings= Settings()
 	screen = pygame.display.set_mode((ai_settings.screen_width,ai_settings.screen_height))
 	pygame.display.set_caption("space invasion")
@@ -18,7 +20,29 @@ def run_game():
 	# make a group to store the bullets in 
 	# bullets an instance of the class Group. created outside the loop to avoid repetition
 	bullets = Group()
+	# make a group of ufos 
+	ufos = Group()
+
+	# create the fleet of ufos
+	gf.create_fleet(ai_settings, screen, ufos)
+	# make an instance of a ufo
+	ufo = Ufo(ai_settings, screen)
 	# start the mainloop for the game.
+
+	class Backround(pygame.sprite.Sprite):
+		"""a Background class for the background image of the game"""
+		def __init__(self, image_file, location):
+			# call the sprite initializer
+			pygame.sprite.Sprite.__init__(self) 
+			self.image = pygame.image.load(image_file)
+			self.rect = self.image.get_rect()
+			self.rect.left, self.rect.top = location
+
+	background = Backround('images/background.bmp', [0,0])
+
+	screen.fill([255, 255, 255])
+	screen.blit(background.image, background.rect)
+			
 	while True:
 
 		# keyboard and mouse events
@@ -26,7 +50,7 @@ def run_game():
 		ship.update()
 		gf.update_bullets(bullets)
 
-		gf.update_screen(ai_settings,screen,ship, bullets)
+		gf.update_screen(ai_settings,screen,ship, ufos, bullets)
 
 
 run_game()

@@ -11,7 +11,7 @@ class Ship():
 		self.ai_settings = ai_settings
 
 		# load the ship's image and get its rect
-		self.image= pygame.image.load('images/beyond3.bmp')
+		self.image= pygame.image.load('images/spacexA.bmp')
 		self.rect = self.image.get_rect()
 		self.screen_rect = screen.get_rect()
 
@@ -32,7 +32,7 @@ class Ship():
 		if self.moving_right and self.rect.right < self.screen_rect.right:
 			self.center += self.ai_settings.ship_speed_factor
 
-		if self.moving_left and self.rect.left > self.screen_rect.left:
+		if self.moving_left and self.rect.left > 0:
 			self.center -= self.ai_settings.ship_speed_factor
 
 		# update rect object from self.center
