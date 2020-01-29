@@ -48,7 +48,7 @@ def check_events(ai_settings,screen, ship, bullets):
 
 
 				
-def update_screen(ai_settings,screen, ship, ufos, bullets):
+def update_screen(ai_settings,screen, ship, startreks, bullets):
 	"""update images on the screen and flip to the new screen"""
 	screen.fill(ai_settings.bg_color)
 	# redraw all bullets behind ship and aliens
@@ -56,8 +56,7 @@ def update_screen(ai_settings,screen, ship, ufos, bullets):
 		bullet.draw_bullet()
 
 	ship.blitme()
-	ufo.blitme()
-	aliens.draw(screen)
+	startreks.draw(screen)
 
 	# make the most recently drawn screen visible
 	pygame. display.flip()
@@ -71,21 +70,21 @@ def update_bullets(bullets):
 		if bullet.rect.bottom <= 0:
 			bullets.remove(bullet)
 
-def create_fleet(ai_settings, screen, ufos):
+def create_fleet(ai_settings, screen, startreks):
 	"""create a full fleet of ufos"""
 	# create a ufo and find the number of ufos in a row
 	# spacing between each ufo is equal to one ufo width
-	ufo = Ufo(ai_settings, screen)
-	ufo_width = ufo.rect.width
-	available_space_x = ai_settings.screen_width -2 *ufo_width
-	number_ufos_x = int(available_space_x / (2 * ufo_width))
+	startrek = Ufo(ai_settings, screen)
+	startrek_width = startrek.rect.width
+	available_space_x = ai_settings.screen_width -2 *startrek_width
+	number_startreks_x = int(available_space_x / (2 * startrek_width))
 
-	# create the first row of ufos. 
-	for ufo_number in range(number_ufos_x):
+	# create the first row of startreks. 
+	for startrek_number in range(number_startreks_x):
 		# create a ufo and place it in the row
-		ufo = Ufo(ai_settings, screen)
-		ufo.x = ufo_width + 2 * ufo_width * ufo_number
-		ufo.rect.x = ufo.x
-		ufo.add(ufo)
+		startrek = Ufo(ai_settings, screen)
+		startrek.x = startrek_width + 2 * startrek_width * startrek_number
+		startrek.rect.x = startrek.x
+		startreks.add(startrek)
 
 

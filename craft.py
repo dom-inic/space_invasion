@@ -21,12 +21,12 @@ def run_game():
 	# bullets an instance of the class Group. created outside the loop to avoid repetition
 	bullets = Group()
 	# make a group of ufos 
-	ufos = Group()
+	startreks = Group()
 
 	# create the fleet of ufos
-	gf.create_fleet(ai_settings, screen, ufos)
+	gf.create_fleet(ai_settings, screen, startreks)
 	# make an instance of a ufo
-	ufo = Ufo(ai_settings, screen)
+	startrek= Ufo(ai_settings, screen)
 	# start the mainloop for the game.
 
 	class Backround(pygame.sprite.Sprite):
@@ -50,7 +50,7 @@ def run_game():
 		ship.update()
 		gf.update_bullets(bullets)
 
-		gf.update_screen(ai_settings,screen,ship, ufos, bullets)
+		gf.update_screen(ai_settings,screen,ship, startreks, bullets)
 
 
 run_game()
