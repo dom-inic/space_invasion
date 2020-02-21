@@ -23,8 +23,8 @@ def run_game():
 	# make a group of ufos 
 	startreks = Group()
 
-	# create the fleet of ufos
-	gf.create_fleet(ai_settings, screen, startreks)
+	# create the fleet of startreks
+	gf.create_fleet(ai_settings, screen, ship, startreks)
 	# make an instance of a ufo
 	startrek= Ufo(ai_settings, screen)
 	# start the mainloop for the game.
@@ -44,13 +44,34 @@ def run_game():
 	screen.blit(background.image, background.rect)
 			
 	while True:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				sys.exit()
+			elif event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_ESCAPE:
+					sys.exit()
+				if event.key == pygame.K_RIGHT:
+					ship.moving_right = True
+
+				if event.key == pygame.K_LEFT:
+					ship.moving_left = True
+				if event.key == pygame.K_SPACE:
+					gf.fire_bullet(ai_settings, screen, ship, bullets)
+			elif event.type == pygame.KEYUP:
+				if event.key == pygame.K_RIGHT:
+					ship.moving_right = False
+
+				if event.key == pygame.K_LEFT:
+					ship.moving_left = False
 
 		# keyboard and mouse events
-		gf.check_events(ai_settings ,screen,ship, bullets)
+		# gf.check_events(ai_settings ,screen,ship, bullets)
 		ship.update()
-		gf.update_bullets(bullets)
+		gf.update_bullets(ai_settings, screen, ship, startreks, bullets)
+		gf.update_startreks(ai_settings, startreks)
 
 		gf.update_screen(ai_settings,screen,ship, startreks, bullets)
+	
 
 
 run_game()
