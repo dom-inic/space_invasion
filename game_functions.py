@@ -3,6 +3,10 @@ import sys
 import pygame
 from bullet import Bullet
 from ufo import Ufo
+from time import sleep
+# from gameover import Gameover
+
+# gameover = Gameover(screen)
 
 # def check_keydown_events(event,ai_settings, screen,ship, bullets):
 # 	"""respond to keypresses """
@@ -132,9 +136,46 @@ def change_fleet_direction(ai_settings, startreks):
 		startrek.rect.y += ai_settings.fleet_drop_speed
 	ai_settings.fleet_direction *= -1
 
-def update_startreks(ai_settings, startreks):
+def  ship_hit(ai_settings, stats, screen, ship, startreks, bullets):
+	""" respond to ship being hit by a starttrek"""
+	if stats.ships_left > 0:
+
+		# decrement ship_left
+		stats.ships_left -= 1
+
+		# empty the list of startreks and bullets
+		startreks.empty()
+		bullets.empty()
+
+		# create a new fleet and center the ship
+		create_fleet(ai_settings,screen, ship, startreks)
+		ship.center_ship()
+
+		# pause
+		sleep(0.5)
+	else:
+		stats.game_active = False
+		
+
+
+def update_startreks(ai_settings,stats, screen, ship, startreks, bullets):
 	check_fleet_edges(ai_settings, startreks)
 	startreks.update()
+
+	# look for startrek and ship collisions
+	if pygame.sprite.spritecollideany(ship, startreks):
+		ship_hit(ai_settings, stats, screen, ship, startreks, bullets)
+
+	check_startreks_bottom(ai_settings, stats, screen, ship, startreks, bullets)
+def check_startreks_bottom(ai_settings, stats, screen, ship, startreks, bullets):
+	""" checking whether any startreks have reached the bottom of the screen """
+	screen_rect = screen.get_rect()
+	for startrek in startreks.sprites():
+		if startrek.rect.bottom >= screen_rect.bottom:
+			# treat this the same as if the ship got hit
+			ship_hit(ai_settings, stats, screen, ship, startreks, bullets)
+			break
+		
 
 
 

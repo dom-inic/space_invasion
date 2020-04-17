@@ -7,14 +7,17 @@ from settings import Settings
 from ship import Ship
 from ufo import Ufo
 import game_functions as gf
-
+from game_stats import Gamestats, Gameover
+from time import sleep
 def run_game():
 	# initialize game and create a screen object.
 	pygame.init()
 	# make an instance of the class Settings 
 	ai_settings= Settings()
 	screen = pygame.display.set_mode((ai_settings.screen_width,ai_settings.screen_height))
-	pygame.display.set_caption("space invasion")
+	pygame.display.set_caption("corona virus pandemic")
+	# lets create an instance to stor game statistics
+	stats = Gamestats(ai_settings)
 	# make a ship
 	ship = Ship(ai_settings, screen)
 	# make a group to store the bullets in 
@@ -28,6 +31,8 @@ def run_game():
 	# make an instance of a ufo
 	startrek= Ufo(ai_settings, screen)
 	# start the mainloop for the game.
+	#  lets create an instance of gameover 
+	gameover = Gameover(screen)
 
 	class Backround(pygame.sprite.Sprite):
 		"""a Background class for the background image of the game"""
@@ -42,11 +47,14 @@ def run_game():
 
 	screen.fill([255, 255, 255])
 	screen.blit(background.image, background.rect)
+
+	# boolean for quiting the game and setting the while loop to true
+	running = True
 			
-	while True:
+	while running:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
-				sys.exit()
+				running = False
 			elif event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_ESCAPE:
 					sys.exit()
@@ -57,6 +65,10 @@ def run_game():
 					ship.moving_left = True
 				if event.key == pygame.K_SPACE:
 					gf.fire_bullet(ai_settings, screen, ship, bullets)
+				if event.key == pygame.K_p:
+					stats.game_active = True
+				if event.key== pygame.K_BACKSPACE:
+					sleep(2)
 			elif event.type == pygame.KEYUP:
 				if event.key == pygame.K_RIGHT:
 					ship.moving_right = False
@@ -66,11 +78,13 @@ def run_game():
 
 		# keyboard and mouse events
 		# gf.check_events(ai_settings ,screen,ship, bullets)
-		ship.update()
-		gf.update_bullets(ai_settings, screen, ship, startreks, bullets)
-		gf.update_startreks(ai_settings, startreks)
+		if stats.game_active:
+			ship.update()
+			gf.update_bullets(ai_settings, screen, ship, startreks, bullets)
+			gf.update_startreks(ai_settings,stats, screen, ship, startreks, bullets)
 
 		gf.update_screen(ai_settings,screen,ship, startreks, bullets)
+
 	
 
 

@@ -11,7 +11,7 @@ class Ship():
 		self.ai_settings = ai_settings
 
 		# load the ship's image and get its rect
-		self.image= pygame.image.load('images/spacexA.bmp')
+		self.image= pygame.image.load('images/scientist.BMP')
 		self.rect = self.image.get_rect()
 		self.screen_rect = screen.get_rect()
 
@@ -41,4 +41,8 @@ class Ship():
 	def blitme(self):
 		"""draw the ship at its current location"""
 		self.screen.blit(self.image, self.rect)
+
+	def center_ship(self):
+		""" center the ship on the screen"""
+		self.center = self.screen_rect.centerx
 

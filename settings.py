@@ -6,14 +6,15 @@ class Settings():
 	def __init__(self):
 		"""initialize the game's settings. initializes attributes controlling the game"""
 		# screen setting 
-		self.screen_width=1300
+		self.screen_width=1200
 		self.screen_height=600
 		self.bg_color= (0, 0 , 0)
 		# self.bg_image = pygame.image.load('images/background.bmp')
 		# self.bg_image('spacex.bmp') trying to add  a background image for the games background.
 		
 		# ship settings 
-		self.ship_speed_factor = 1.5
+		self.ship_speed_factor = 2
+		self.ship_limit = 1
 		# bullet settings 
 		self.bullet_speed_factor = 3
 		self.bullet_width = 4
@@ -22,7 +23,7 @@ class Settings():
 		self.bullets_allowed = 5
 
 		# startrel settings
-		self.startrek_speed_factor = 1
+		self.startrek_speed_factor = 3
 		self.fleet_drop_speed = 10
 		# fleet direction of i represents right; -1 represents left
 		self.fleet_direction = 1
