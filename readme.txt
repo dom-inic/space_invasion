@@ -17,3 +17,10 @@ importing classes
 from ship import Ship
 unittest module for testing codes
 try and except to manage errors that might arise when playing the game 
+in order for you to begin the game you need to press p which stands for play 
+to shoot use the spacebar
+to quit the game place the esc button
+to move right and left use the right and left arrow keys 
+the remaining part is the pausing part which am yet to decide which keyboard button to use since almost every known key by the user is 
+already being used for other purposes. but it is currently working with the capslock key . 
+also tweaked it to work best with the covid 19 pandemic we have right now. 
