@@ -52,7 +52,7 @@ def fire_bullet(ai_settings, screen, ship, bullets):
 
 
 				
-def update_screen(ai_settings,screen, ship, startreks, bullets):
+def update_screen(ai_settings,screen, stats, ship, startreks, bullets, play_button, restart_button, gameover_button):
 	"""update images on the screen and flip to the new screen"""
 	screen.fill(ai_settings.bg_color)
 	# redraw all bullets behind ship and aliens
@@ -61,6 +61,17 @@ def update_screen(ai_settings,screen, ship, startreks, bullets):
 
 	ship.blitme()
 	startreks.draw(screen)
+
+	# Draw the play button if the game is inactive 
+	if not stats.game_active:
+		play_button.draw_button()
+
+	elif stats.game_active:
+		restart_button.draw_button()
+
+	if stats.ships_left == 0:
+		gameover_button.draw_button()
+
 
 	# make the most recently drawn screen visible
 	pygame. display.flip()
@@ -176,8 +187,37 @@ def check_startreks_bottom(ai_settings, stats, screen, ship, startreks, bullets)
 			ship_hit(ai_settings, stats, screen, ship, startreks, bullets)
 			break
 		
+def check_play_button(ai_settings, screen, stats, play_button,ship, startreks, bullets, mouse_x, mouse_y):
+	""" start a new game when the player clicks play """
+	button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
+	if button_clicked and not stats.game_active:
+		# reset the game statistics
+		stats.reset_stats()
+		stats.game_active = True
+
+		# empty the list of starttreks and bullets 
+		startreks.empty()
+		bullets.empty()
+
+		# create a new fleet and center the ship
+		create_fleet(ai_settings, screen, ship, startreks)
+		ship.center_ship()
 
 
+def check_restart_button(ai_settings, screen, stats, restart_button, ship, startreks, bullets, mouse_x, mouse_y):
+	""" restart a game when the player clicks the restart button """
+	if restart_button.rect.collidepoint(mouse_x, mouse_y):
+		# reset the game statistics 
+		stats.reset_stats()
+		stats.game_active = True
+
+		# empty the list of startreks and bullets
+		startreks.empty()
+		bullets.empty()
+
+		# create a new fleet and center the ship
+		create_fleet(ai_settings, screen, ship, startreks)
+		ship.center_ship()
 
 
 
