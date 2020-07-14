@@ -4,6 +4,7 @@ import pygame
 from bullet import Bullet
 from ufo import Ufo
 from time import sleep
+from button import Button
 # from gameover import Gameover
 
 # gameover = Gameover(screen)
@@ -88,7 +89,9 @@ def update_bullets(ai_settings, screen, ship, startreks, bullets):
 			bullets.remove(bullet)
 
 	if len(startreks) == 0:
+		# destroy existing bullets, speed up game and create new fleet
 		bullets.empty()
+		ai_settings.increase_speed()
 		create_fleet(ai_settings, screen, ship, startreks)
 
 def create_fleet(ai_settings, screen,ship, startreks):
@@ -166,6 +169,7 @@ def  ship_hit(ai_settings, stats, screen, ship, startreks, bullets):
 		sleep(0.5)
 	else:
 		stats.game_active = False
+		pygame.mouse.set_visible(True)
 		
 
 
@@ -191,6 +195,10 @@ def check_play_button(ai_settings, screen, stats, play_button,ship, startreks, b
 	""" start a new game when the player clicks play """
 	button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
 	if button_clicked and not stats.game_active:
+		# reset the game settings
+		ai_settings.initialize_dynamic()
+		# hide the mouse cursor
+		pygame.mouse.set_visible(False)
 		# reset the game statistics
 		stats.reset_stats()
 		stats.game_active = True
@@ -218,6 +226,18 @@ def check_restart_button(ai_settings, screen, stats, restart_button, ship, start
 		# create a new fleet and center the ship
 		create_fleet(ai_settings, screen, ship, startreks)
 		ship.center_ship()
+
+def p_keyboardplay(ai_settings, screen, stats, ship, startreks, bullets):
+	stats.reset_stats()
+	stats.game_active = True
+
+	# empty the list of startreks and bullets
+	startreks.empty()
+	bullets.empty()
+
+	# create a new fleet and center the ship
+	create_fleet(ai_settings, screen, ship, startreks)
+	ship.center_ship()
 
 
 

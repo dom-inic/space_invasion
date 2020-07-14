@@ -74,8 +74,8 @@ def run_game():
 					ship.moving_left = True
 				if event.key == pygame.K_SPACE:
 					gf.fire_bullet(ai_settings, screen, ship, bullets)
-				# if event.key == pygame.K_p:
-				# 	stats.game_active = True
+				if event.key == pygame.K_p and  K_BACKSPACE:
+					gf.p_keyboardplay(ai_settings, screen, stats, ship, startreks, bullets)
 				# if event.key== pygame.K_BACKSPACE:
 				# 	sleep(2)
 			elif event.type == pygame.KEYUP:
