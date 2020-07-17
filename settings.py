@@ -17,10 +17,10 @@ class Settings():
 		self.ship_limit = 1
 		# bullet settings 
 		# self.bullet_speed_factor = 3
-		self.bullet_width = 4
+		self.bullet_width = 300
 		self.bullet_height = 8
 		self.bullet_color =255, 0, 102
-		self.bullets_allowed = 5
+		self.bullets_allowed = 10
 
 		# startrel settings
 		# self.startrek_speed_factor = 3
@@ -30,6 +30,8 @@ class Settings():
 
 		# how quickly the game speeds up
 		self.speedup_scale = 1.1
+		# how quickly the startrek point values increase
+		self.score_scale = 1.5
 		self.initialize_dynamic_settings()
 
 	def initialize_dynamic_settings(self):
@@ -40,9 +42,13 @@ class Settings():
 
 		self.fleet_direction = 1
 
+		self.startrek_points = 50
+
 	def increase_speed(self):
-		""" increase speed settings """
+		""" increase speed settings and startreks point values"""
 		self. ship_speed_factor *= self.speedup_scale
 		self.bullet_speed_factor *= self.speedup_scale
 		self.startrek_speed_factor *= self.speedup_scale
+
+		self.startrek_points = int(self.startrek_points * self.score_scale)
 

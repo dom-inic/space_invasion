@@ -7,10 +7,18 @@ class Gamestats():
 		self.ai_settings = ai_settings
 		self.reset_stats()
 		self.game_active = False
+		
+
+		# high scores should never be reset
+		self.high_score = 0
 
 	def reset_stats(self):
 		""" initialize statistics that can change during the game"""
+		
 		self.ships_left = self.ai_settings.ship_limit
+		self.score = 0
+		self.level =1 
+
 
 class Gameover():
 	""" a class to show game over when the player has ran out of ships"""
@@ -30,4 +38,4 @@ class Gameover():
 
 	def blitme(self):
 		""" draw game over at its current location """
-		self.screen.blit(self.image, self.rect)
+  

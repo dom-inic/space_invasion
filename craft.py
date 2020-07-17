@@ -10,6 +10,7 @@ import game_functions as gf
 from game_stats import Gamestats, Gameover
 from time import sleep
 from button import Button
+from scoreboard import Scoreboard
 def run_game():
 	# initialize game and create a screen object.
 	pygame.init()
@@ -17,8 +18,9 @@ def run_game():
 	ai_settings= Settings()
 	screen = pygame.display.set_mode((ai_settings.screen_width,ai_settings.screen_height))
 	pygame.display.set_caption("corona virus pandemic")
-	# lets create an instance to stor game statistics
+	# lets create an instance to stor game statistics and create a scoreboard
 	stats = Gamestats(ai_settings)
+	sb = Scoreboard(ai_settings, screen, stats)
 	# make a ship
 	ship = Ship(ai_settings, screen)
 	# make a group to store the bullets in 
@@ -38,10 +40,10 @@ def run_game():
 	play_button = Button(ai_settings, screen, "Play", 0 , 0)
 
 	# creating a restart button 
-	restart_button = Button(ai_settings, screen, "Restart", 1000, 0)
+	restart_button = Button(ai_settings, screen, "Restart", 800, 0)
 
 	# gameover button to be displayed when the player runs out ships
-	gameover_button = Button(ai_settings, screen, "Gameover", 500, 0)
+	gameover_button = Button(ai_settings, screen, "Gameover", 200, 0)
 
 	class Backround(pygame.sprite.Sprite):
 		"""a Background class for the background image of the game"""
@@ -87,17 +89,17 @@ def run_game():
 
 			elif event.type == pygame.MOUSEBUTTONDOWN:
 				mouse_x, mouse_y = pygame.mouse.get_pos()
-				gf.check_play_button(ai_settings, screen, stats, play_button,ship, startreks, bullets, mouse_x, mouse_y)
+				gf.check_play_button(ai_settings, screen, stats,sb,  play_button,ship, startreks, bullets, mouse_x, mouse_y)
 				gf.check_restart_button(ai_settings, screen, stats, restart_button, ship, startreks, bullets, mouse_x, mouse_y)
 
 		# keyboard and mouse events
 		# gf.check_events(ai_settings ,screen,ship, bullets)
 		if stats.game_active:
 			ship.update()
-			gf.update_bullets(ai_settings, screen, ship, startreks, bullets)
+			gf.update_bullets(ai_settings, screen, stats, sb, ship, startreks, bullets)
 			gf.update_startreks(ai_settings,stats, screen, ship, startreks, bullets)
 
-		gf.update_screen(ai_settings,screen,stats, ship, startreks, bullets, play_button, restart_button, gameover_button)
+		gf.update_screen(ai_settings,screen,stats,sb ,ship, startreks, bullets, play_button, restart_button, gameover_button)
 
 	
 

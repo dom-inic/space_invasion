@@ -53,7 +53,7 @@ def fire_bullet(ai_settings, screen, ship, bullets):
 
 
 				
-def update_screen(ai_settings,screen, stats, ship, startreks, bullets, play_button, restart_button, gameover_button):
+def update_screen(ai_settings,screen, stats, sb, ship, startreks, bullets, play_button, restart_button, gameover_button):
 	"""update images on the screen and flip to the new screen"""
 	screen.fill(ai_settings.bg_color)
 	# redraw all bullets behind ship and aliens
@@ -62,6 +62,9 @@ def update_screen(ai_settings,screen, stats, ship, startreks, bullets, play_butt
 
 	ship.blitme()
 	startreks.draw(screen)
+
+	# draw the score  information
+	sb.show_score()
 
 	# Draw the play button if the game is inactive 
 	if not stats.game_active:
@@ -76,12 +79,18 @@ def update_screen(ai_settings,screen, stats, ship, startreks, bullets, play_butt
 
 	# make the most recently drawn screen visible
 	pygame. display.flip()
-def update_bullets(ai_settings, screen, ship, startreks, bullets):
+def update_bullets(ai_settings, screen,stats, sb, ship, startreks, bullets):
 	""" update the position of bullets and get rid of old bullets"""
 	# update the bullet's position
 	bullets.update()
 	# check for any bullets that have hit the startreks and get rid of the bullet and the startrek
 	collisions = pygame.sprite.groupcollide(bullets, startreks, True, True)
+
+	if collisions:
+		for startreks in collisions.values():
+			stats.score += ai_settings.startrek_points * len(startreks)
+			sb.prep_score()
+		check_high_score(stats, sb)
 
 	# a for loop to get rid of bullets that have dissappere to avoid slowing down the game
 	for bullet in bullets.copy():
@@ -89,9 +98,14 @@ def update_bullets(ai_settings, screen, ship, startreks, bullets):
 			bullets.remove(bullet)
 
 	if len(startreks) == 0:
+		# start a new level
 		# destroy existing bullets, speed up game and create new fleet
 		bullets.empty()
 		ai_settings.increase_speed()
+
+		# increase level 
+		stats.level += 1
+		sb.prep_level()
 		create_fleet(ai_settings, screen, ship, startreks)
 
 def create_fleet(ai_settings, screen,ship, startreks):
@@ -191,17 +205,22 @@ def check_startreks_bottom(ai_settings, stats, screen, ship, startreks, bullets)
 			ship_hit(ai_settings, stats, screen, ship, startreks, bullets)
 			break
 		
-def check_play_button(ai_settings, screen, stats, play_button,ship, startreks, bullets, mouse_x, mouse_y):
+def check_play_button(ai_settings, screen, stats, sb, play_button,ship, startreks, bullets, mouse_x, mouse_y):
 	""" start a new game when the player clicks play """
 	button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
 	if button_clicked and not stats.game_active:
 		# reset the game settings
-		ai_settings.initialize_dynamic()
+		ai_settings.initialize_dynamic_settings()
 		# hide the mouse cursor
 		pygame.mouse.set_visible(False)
 		# reset the game statistics
 		stats.reset_stats()
 		stats.game_active = True
+
+		# reset the scoreboard images 
+		sb.prep_score()
+		sb.prep_high_score()
+		sb.prep_level()
 
 		# empty the list of starttreks and bullets 
 		startreks.empty()
@@ -238,6 +257,12 @@ def p_keyboardplay(ai_settings, screen, stats, ship, startreks, bullets):
 	# create a new fleet and center the ship
 	create_fleet(ai_settings, screen, ship, startreks)
 	ship.center_ship()
+
+def check_high_score(stats, sb):
+	""" check to see if there is a new high score """
+	if stats.score > stats.high_score:
+		stats.high_score = stats.score
+		sb.prep_high_score()
 
 
 

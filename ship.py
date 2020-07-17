@@ -1,12 +1,13 @@
 # ship file for describing the ship in the game
 import pygame
-
+from pygame.sprite import Sprite
 from settings import Settings
 
-class Ship():
+class Ship(Sprite):
 
 	def __init__(self,ai_settings,screen):
 		"""initialize the ship and set its starting position"""
+		super(Ship, self).__init__()
 		self.screen = screen
 		self.ai_settings = ai_settings
 
