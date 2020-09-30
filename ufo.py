@@ -15,7 +15,7 @@ class Ufo(Sprite):
 		self.ai_settings = ai_settings
 
 		# load the ufo image and set its rect attribute
-		self.image = pygame.image.load('images/covid50.BMP')
+		self.image = pygame.image.load('images/ufotypec.BMP')
 		self.rect = self.image.get_rect()
 
 		# start each new ufo near the top left of the screen 
