@@ -20,13 +20,3 @@ from tkinter import *
 root = Tk()
 root.minsize=(400,400)
 root.mainloop()
-
-# print("i love irene so much ") 
-
-# companera = "my queen is so beutiful "
-
-# print("mi amocsccc")
-# novio = "nyambane"
-# print(novio)
-# age = 18 / 3
-# print(age)
